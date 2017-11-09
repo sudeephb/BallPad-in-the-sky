@@ -7,7 +7,7 @@
 
 	canvas{
 	 background-image: url("sky.jpg");
-	 
+
 }
 </style>
 </head>
@@ -20,7 +20,7 @@
 		var ballRadius = 10;
 		var x = canvas.width/2;
 		var y = canvas.height - ballRadius;
-		
+
 		var dx = 2;
 		var dy = -2;
 
@@ -46,7 +46,7 @@
 			x+=dx;
 			y+=dy;
 			if(x<ballRadius){
-				if(y+ballRadius>paddleY1 && y-ballRadius< paddleY1 + paddleLength) 
+				if(y+ballRadius>paddleY1 && y-ballRadius< paddleY1 + paddleLength)
 					dx = -dx;
 				else {
 					alert("Red Wins!");
@@ -54,15 +54,15 @@
 				}
 			}
 			else if(x > canvas.width - ballRadius){
-				if(y+ballRadius>paddleY2 && y-ballRadius< paddleY2 + paddleLength) 
+				if(y+ballRadius>paddleY2 && y-ballRadius< paddleY2 + paddleLength)
 					dx = -dx;
 					else{
 						alert("Purple wins!");
 						document.location.reload();
-					} 
+					}
 			}
 
-			else if(y > canvas.height - ballRadius || y < ballRadius) 
+			else if(y > canvas.height - ballRadius || y < ballRadius)
 				dy = -dy;
 				}
 
@@ -85,14 +85,33 @@
 
 		function movePaddle1()
 		{
-			if(wPressed && paddleY1 > 0) paddleY1 -= 7;
-			if(sPressed && paddleY1 < canvas.height-paddleLength) paddleY1 += 7;
+			if(wPressed && paddleY1 > 0) paddleY1 -= 5;
+			if(sPressed && paddleY1 < canvas.height-paddleLength) paddleY1 += 5;
 		}
 
-		function movePaddle2()
+		function paddleLogic()
 		{
-			if(upPressed && paddleY2 > 0) paddleY2 -= 7;
-			if(downPressed && paddleY2 < canvas.height-paddleLength) paddleY2 += 7;
+			if((paddleY2+paddleLength)>canvas.height)
+			{
+				paddleY2 = canvas.height-paddleLength;
+
+			}
+			if((paddleY1+paddleLength)>canvas.height)
+			{
+				paddleY1 = canvas.height-paddleLength;
+
+			}
+			if((paddleY2)<0)
+			{
+				paddleY2 = 0;
+
+			}
+			if((paddleY1)<0)
+			{
+				paddleY1 = 0;
+
+			}
+
 		}
 
 
@@ -105,8 +124,9 @@
 			drawPaddle1();
 			drawPaddle2();
 			movePaddle1();
-			movePaddle2();
-			
+			paddleY2 = y- 50;
+			paddleLogic();
+
 		}
 
 
