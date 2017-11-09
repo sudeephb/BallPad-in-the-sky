@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset = "utf-8" />
+	<title>2 pads 1 ball</title>
+	<style>
+
+	canvas{
+	 background-image: url("sky.jpg");
+	 
+}
+</style>
+</head>
+<body>
+	<canvas id = "myCanvas" width = "612" height= "450" style ="border:2px solid "black";"></canvas>
+	<script>
+		var canvas = document.getElementById("myCanvas");
+		var ctx = canvas.getContext("2d");
+
+		var ballRadius = 10;
+		var x = canvas.width/2;
+		var y = canvas.height - ballRadius;
+		
+		var dx = 2;
+		var dy = -2;
+
+		var paddleLength = 100;
+		var paddleY1 = (canvas.height-paddleLength)/2;
+		var paddleY2 = (canvas.height-paddleLength)/2;
+		var paddleWidth = 8;
+
+		var upPressed = false;
+		var downPressed = false;
+		var wPressed = false;
+		var sPressed = false;
+
+		function drawBall(){
+			ctx.beginPath();
+			ctx.arc(x,y,ballRadius,0,Math.PI*2);
+			ctx.fillStyle = "black";
+			ctx.fill();
+			ctx.closePath();
+		}
+
+		function moveBall(){
+			x+=dx;
+			y+=dy;
+			if(x<ballRadius){
+				if(y+ballRadius>paddleY1 && y-ballRadius< paddleY1 + paddleLength) 
+					dx = -dx;
+				else {
+					alert("Red Wins!");
+					document.location.reload();
+				}
+			}
+			else if(x > canvas.width - ballRadius){
+				if(y+ballRadius>paddleY2 && y-ballRadius< paddleY2 + paddleLength) 
+					dx = -dx;
+					else{
+						alert("Purple wins!");
+						document.location.reload();
+					} 
+			}
+
+			else if(y > canvas.height - ballRadius || y < ballRadius) 
+				dy = -dy;
+				}
+
+		function drawPaddle1(){
+			ctx.beginPath();
+			ctx.rect(0,paddleY1,paddleWidth,paddleLength);
+			ctx.fillStyle = "purple";
+			ctx.fill();
+			ctx.closePath();
+		}
+
+		function drawPaddle2(){
+			ctx.beginPath();
+			ctx.rect(canvas.width - paddleWidth,paddleY2,paddleWidth,paddleLength);
+			ctx.fillStyle = "red";
+			ctx.fill();
+			ctx.closePath();
+		}
+
+
+		function movePaddle1()
+		{
+			if(wPressed && paddleY1 > 0) paddleY1 -= 7;
+			if(sPressed && paddleY1 < canvas.height-paddleLength) paddleY1 += 7;
+		}
+
+		function movePaddle2()
+		{
+			if(upPressed && paddleY2 > 0) paddleY2 -= 7;
+			if(downPressed && paddleY2 < canvas.height-paddleLength) paddleY2 += 7;
+		}
+
+
+
+
+		function draw(){
+			ctx.clearRect(0,0,canvas.width,canvas.height);
+			drawBall();
+			moveBall();
+			drawPaddle1();
+			drawPaddle2();
+			movePaddle1();
+			movePaddle2();
+			
+		}
+
+
+
+		document.addEventListener("keydown",keyDownHandler,false);
+		document.addEventListener("keyup",keyUpHandler,false);
+
+		function keyDownHandler(ev){
+			if(ev.keyCode == 38) upPressed = true;
+			else if (ev.keyCode == 40) downPressed = true;
+
+			if(ev.keyCode == 87) wPressed =true;
+			else if(ev.keyCode == 83) sPressed = true;
+		}
+
+		function keyUpHandler(ev){
+			if(ev.keyCode == 38) upPressed = false;
+			else if (ev.keyCode == 40) downPressed = false;
+
+			if(ev.keyCode == 87) wPressed =false;
+			else if(ev.keyCode == 83) sPressed = false;
+		}
+
+		setInterval(draw,10);
+	</script>
+	<hr>
+	Note: Move the left pad with 'w' and 's', and the right pad with 'up' and 'down' buttons.
+
+</body>
+</html>
